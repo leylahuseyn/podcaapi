@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+    <div class="p-5">
+            <label for="">image</label>
+            <input type="text" id="image">
+            <label for="">name</label>
+            <input type="text" id="name">
+            <label for="">text</label>
+            <input type="text" id="text">
+            <button class="btn btn-success">create</button>
+    </div>
+             <script>
+                const btn = document.querySelector('.btn')
+                btn.addEventListener('click', function(){
+                    fetch('https://646f41b909ff19b12086de87.mockapi.io/cards',{
+                        method: 'POST',
+                        headers:{
+                            'Content-Type':'application/json'
+                        },
+                        body:JSON.stringify({
+                            image: document.querySelector('#image').value,
+                            name: document.querySelector('#name').value,
+                            text: document.querySelector('#text').value,
+                        })
+                    }).then(res=>{
+                        if(res.ok){
+                            console.log('elave olundu');
+                            document.querySelector('#image').value='';
+                            document.querySelector('#name').value='';
+                            document.querySelector('#text').value='';
+                        }
+                        else{
+                            console.log('error');
+                        }
+                    }).catch(()=>console.log('error'))
+                })
+             </script>
+
+             <div class="container">
+                <div class="row datas">
+                    
+                </div>
+             </div>
+
+             <script>
+                function getDatas(){
+                    
+                
+                fetch('https://646f41b909ff19b12086de87.mockapi.io/cards')
+                .then(res=>res.json())
+                .then(data=>{
+                    const datas= document.querySelector('.datas')
+                    datas.innerHTML='';
+                    data.forEach(el => {
+                        datas.innerHTML+=`
+                        <div class="card mb-3 shadow mt-3 d-flex mx-auto" style="max-width: 90%;">
+                        <div class="row g-0">
+                          <div class="col-md-4">
+                            <img src="${el.image}" class="img-fluid rounded-start" alt="...">
+                          </div>
+                          <div class="col-md-8">
+                            <div class="card-body">
+                              <h5 class="card-title">${el.name}</h5>
+                              <p class="card-text">${el.text}</p>
+                             </div>
+                          </div>
+                        </div>
+                      </div>
+                        `
+                    });
+                }).catch(err=>console.log('error'))
+            }
+            getDatas();
+             </script>
+
+
+
+
+            <!-- <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                  <div class="col-md-4">
+                    <img src="..." class="img-fluid rounded-start" alt="...">
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body">
+                      <h5 class="card-title">Card title</h5>
+                      <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+        
+</body>
+</html>
